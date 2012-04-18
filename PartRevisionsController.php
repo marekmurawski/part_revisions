@@ -15,11 +15,9 @@ class PartRevisionsController extends PluginController {
 		// Check for localized documentation or fallback to the default english and display notice
 		$lang = ( $user = AuthUser::getRecord() ) ? strtolower($user->language) : 'en';
 
-		if (!file_exists(PLUGINS_ROOT . DS . 'page_part_revisions' . DS . 'views/documentation/' . $lang . '.php')) {
-			$this->display('part_revisions/views/documentation/en', array('message' => $message));
-		}
-		else
-			$this->display('part_revisions/views/documentation/' . $lang);
+		if (!file_exists(PLUGINS_ROOT . DS . 'page_part_revisions'.DS.'views'.DS.'documentation'.DS. $lang . '.php')) {
+			$this->display('part_revisions'.DS.'views'.DS.'documentation'.DS.$lang);
+			}
 	}
 	
 	function index() {

@@ -6,12 +6,11 @@ if (!defined('IN_CMS')) {
 }
 
 /**
- * Restrict PHP Plugin for Wolf CMS.
- * Provides PHP code restriction in page parts based on roles and/or permissions
- * 
+ * Part Revisions Plugin for Wolf CMS
+ * Provides Page Part revisions history management.
  * 
  * @package Plugins
- * @subpackage restrict_php
+ * @subpackage part_revisions
  *
  * @author Marek Murawski <http://marekmurawski.pl>
  * @copyright Marek Murawski, 2012
@@ -29,6 +28,14 @@ Plugin::setInfos(array(
 		'require_wolf_version' => '0.7.5'
 ));
 
+/**
+ * Root location where Part Revisions is located.
+ */
+define('PART_REVISIONS_ROOT', URI_PUBLIC . 'wolf/plugins/comment');
+
+// Load the Page Part Revision class into the system.
+AutoLoader::addFile('PartRevision', CORE_ROOT . '/plugins/part_revisions/models/PartRevision.php');
+
 Plugin::addController('part_revisions', __('Part Revisions'), 'administrator', true);
 
 Observer::observe('part_edit_before_save', 'restrict_php_part');
@@ -40,12 +47,7 @@ Observer::observe('page_add_after_save', 'show_part_revisions_add_error');
 
 function show_part_revisions_edit_error($page) {
 	if ($restr_parts = Flash::get('php_restricted_parts')) {
-		Flash::set('error', __("You CAN'T edit") . '<br/><strong>' .
-		  implode('<br/>', $restr_parts) . '</strong><br/>' .
-		  __('page parts because they contain PHP code.') . '<br/>' .
-		  __('Contact site administrator if you need to edit PHP code in page parts.')
-		);
-	Flash::set('info', __('Some page parts were not updated due to "PHP edit" permission restrictions!'));	
+	Flash::set('info', __('Part revisions saved!'));	
 	}
 
 	return $page;
@@ -53,11 +55,7 @@ function show_part_revisions_edit_error($page) {
 
 function show_part_revisions_add_error($page) {
 	if ($restr_parts = Flash::get('php_restricted_parts')) {
-		Flash::set('error', __("You CAN'T add PHP code into page parts. The following parts were cleared:") . '<br/><strong>' .
-		  implode('<br/>', $restr_parts) . '</strong><br/>' .
-		  __('Contact site administrator if you need to edit PHP code in page parts.')
-		);
-	Flash::set('info', __('Some page parts were not updated due to "PHP edit" permission restrictions!'));	
+	Flash::set('info', __('Part revisions saved!'));	
 	}
 
 	return $page;
@@ -66,19 +64,15 @@ function show_part_revisions_add_error($page) {
 
 function save_old_part(&$part) {
 	$oldpart = PagePart::findByIdFrom('PagePart', $part->id);
-	$codeFound = FALSE;
 
-	$codeFound = (has_php_code($part->content) || has_php_code($oldpart->content));
-
-	if ($codeFound) {
 		if ($oldpart->content !== $part->content) { // the content has changed
 			if (!AuthUser::hasPermission('edit_parts_php')) {
 				$restrParts = Flash::get('php_restricted_parts');
 				$restrParts[] = $part->name;
 				Flash::setNow('php_restricted_parts', $restrParts);
+				
 				$part->content = $oldpart->content; //set original page part content
 			}
 		}
-	}
 	return $part;
 }
