@@ -9,8 +9,11 @@ if (!defined('IN_CMS')) {
 <h2>Part Revisions plugin</h2>
 <div>
 	<p>
-		This plugin provides way to restrict certain users or group of users (roles) from creating and editing PHP code in page parts. Essentially it checks for existence of PHP opening tags
-		in page part content while saving the page part data.
+		Part Revisions plugin provides a history of Page Parts recent changes and versions.
+		It allows you to track and restore changes of each page part in Wolf CMS site.		
+	</p>
+	<p>
+		After each page part edit it logs the last page part state which can be accessed in future.
 	</p>
 
 </div>

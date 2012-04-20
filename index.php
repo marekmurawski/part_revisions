@@ -31,48 +31,49 @@ Plugin::setInfos(array(
 /**
  * Root location where Part Revisions is located.
  */
-define('PART_REVISIONS_ROOT', URI_PUBLIC . 'wolf/plugins/comment');
+define('PR_ROOT_DIR', CORE_ROOT . '/plugins/part_revisions/');
+define('PR_CSS_ID', 'part_revisions');
 
 // Load the Page Part Revision class into the system.
-AutoLoader::addFile('PartRevision', CORE_ROOT . '/plugins/part_revisions/models/PartRevision.php');
+AutoLoader::addFile('PartRevision', PR_ROOT_DIR.'models/PartRevision.php');
 
 Plugin::addController('part_revisions', __('Part Revisions'), 'administrator', true);
 
-Observer::observe('part_edit_before_save', 'restrict_php_part');
-Observer::observe('part_add_before_save', 'restrict_php_part');
+Observer::observe('part_edit_before_save', 'save_old_part');
+Observer::observe('part_add_before_save', 'save_old_part');
 
-Observer::observe('page_edit_after_save', 'show_part_revisions_edit_error');
-Observer::observe('page_add_after_save', 'show_part_revisions_add_error');
+Observer::observe('page_edit_after_save', 'show_part_revisions_saved_info'); 
 
+Observer::observe('view_page_edit_tab_links', 'PartRevisionsController::Callback_view_page_edit_tab_links');
+Observer::observe('view_page_edit_tabs', 'PartRevisionsController::Callback_view_page_edit_tabs');
+Observer::observe('view_page_edit_popup', 'PartRevisionsController::Callback_view_page_edit_popup');
 
-function show_part_revisions_edit_error($page) {
-	if ($restr_parts = Flash::get('php_restricted_parts')) {
-	Flash::set('info', __('Part revisions saved!'));	
+function show_part_revisions_saved_info($page) {
+	if ($savedParts = Flash::get('page_revisions_saved_parts')) {
+		
+	Flash::set('info', __('The following part revisions were saved:') . '<br/>' .
+	  implode('<br/>', $savedParts));	
 	}
 
 	return $page;
+	
 }
-
-function show_part_revisions_add_error($page) {
-	if ($restr_parts = Flash::get('php_restricted_parts')) {
-	Flash::set('info', __('Part revisions saved!'));	
-	}
-
-	return $page;
-}
-
 
 function save_old_part(&$part) {
 	$oldpart = PagePart::findByIdFrom('PagePart', $part->id);
-
+        //$savedParts = array();
 		if ($oldpart->content !== $part->content) { // the content has changed
-			if (!AuthUser::hasPermission('edit_parts_php')) {
-				$restrParts = Flash::get('php_restricted_parts');
-				$restrParts[] = $part->name;
-				Flash::setNow('php_restricted_parts', $restrParts);
-				
-				$part->content = $oldpart->content; //set original page part content
-			}
+				$partRevision = new PartRevision;
+				$partRevision->content		= $oldpart->content;
+				$partRevision->content_html	= $oldpart->content_html;
+				$partRevision->filter_id	= $oldpart->filter_id;
+				$partRevision->name		= $oldpart->name;
+				$partRevision->page_id		= $oldpart->page_id;
+				$partRevision->size		= mb_strlen($oldpart->content);
+				$partRevision->save();
+				$savedParts = Flash::get('page_revisions_saved_parts');
+				$savedParts[] = $oldpart->name;
+				Flash::setNow('page_revisions_saved_parts', $savedParts);
 		}
 	return $part;
 }

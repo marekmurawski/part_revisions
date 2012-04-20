@@ -1,0 +1,42 @@
+#part_revisions_tabcontents {
+
+}
+
+/*  { width: 100%; } */
+
+#part_revisions_list { border: 1px solid #ccc; width: 100% }
+
+#part_revisions_list td { background: none; cursor: default; padding: 3px;}
+
+#part_revisions_list thead { background-color: #ccc; }
+
+#part_revisions_list tr.odd { background-color: #e4e4e4; }
+
+#part_revisions_list tr.even { background-color: #f8f8f8; }
+
+#part_revisions_list tr.deleted { color: #888; }
+
+
+#part_revisions_list tbody tr:hover {background-color: #76A83A;}
+
+#part_revisions_list tbody tr .actions_wrapper {visibility: hidden;}
+#part_revisions_list tbody tr:hover .actions_wrapper {visibility: visible;}
+
+#part_revisions_list td.actions,
+#part_revisions_list td.size { text-align: right; width: 80px; }
+
+#part_revisions_list td.name,
+#part_revisions_list td.updated_by { width: 120px; }
+
+#part_revisions_list td.date { width: 160px; text-align: center; }
+
+#part-revision-preview-dialog,
+#part-revision-diff-dialog {width: 90%;}
+#part-revision-preview-dialog,
+#part-revision-diff-dialog content {width: 100%; position: relative;}
+
+#part-revision-preview-code,
+#part-revision-preview-diff {font-family:monospace; width: 100%; height: 400px; overflow-y: scroll; border: 1px solid #ccc;}
+
+del.deletion {color: red;}
+ins.insertion {color: green; font-weight: bold;}
