@@ -36,7 +36,7 @@ class PartRevisionsController extends PluginController {
 	
 	public function preview($id) {
 		$part = PartRevision::findOneFrom('PartRevision','id='.$id);
-		echo htmlentities($part->content);
+		echo nl2br(htmlentities($part->content));
 	}
 
 	public function diff($id) {
@@ -44,7 +44,12 @@ class PartRevisionsController extends PluginController {
 		AutoLoader::load('SimpleDiff');
 		$old = PartRevision::findOneFrom('PartRevision','id='.(int)$id);
 		$new = PagePart::findOneFrom('PagePart', 'page_id=? AND name=?', array($old->page_id,$old->name));
-		echo nl2br(SimpleDiff::htmlDiff(htmlentities($old->content),htmlentities($new->content)));
+
+		$old = nl2br(htmlentities($old->content));
+		$old = str_replace('<br />','<br/>',$old);
+		$new = nl2br(htmlentities($new->content));
+		$new = str_replace('<br />','<br/>',$new);
+		echo SimpleDiff::htmlDiff($old,$new);
 	}
 	
 	public function getlist() {
@@ -73,8 +78,9 @@ class PartRevisionsController extends PluginController {
 		redirect(get_url('plugin/part_revisions/recent'));
 	}	
 
-	function recent() {
+	function recent($page_number = 1) {
 		$this->display('part_revisions/views/recent', array(
+				'page_number' => $page_number
 			));
 	}
 	

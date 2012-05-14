@@ -38,5 +38,5 @@
 #part-revision-preview-code,
 #part-revision-preview-diff {font-family:monospace; width: 100%; height: 400px; overflow-y: scroll; border: 1px solid #ccc;}
 
-del.deletion {color: red;}
-ins.insertion {color: green; font-weight: bold;}
+del.deletion {color: red; background: #fcc; border: 1px solid #a66; text-decoration: none;}
+ins.insertion {color: green; font-weight: bold; background: #cfc; border: 1px solid #6a6; text-decoration: none;}

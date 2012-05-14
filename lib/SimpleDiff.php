@@ -42,6 +42,7 @@ class SimpleDiff {
 
 	public static function htmlDiff($old, $new){
 		$ret = '';
+	
 		$diff = self::diff(explode(' ', $old), explode(' ', $new));
 		foreach($diff as $k){
 			if(is_array($k))
