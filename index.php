@@ -37,7 +37,7 @@ define('PR_CSS_ID', 'part_revisions');
 // Load the Page Part Revision class into the system.
 AutoLoader::addFile('PartRevision', PR_ROOT_DIR.'models/PartRevision.php');
 AutoLoader::addFolder(PR_ROOT_DIR.'lib');
-Plugin::addController('part_revisions', __('Part Revisions'), 'administrator', true);
+Plugin::addController('part_revisions', __('Part Revisions'), 'admin_view');  
 
 Observer::observe('part_edit_before_save', 'save_old_part');
 Observer::observe('part_add_before_save', 'save_old_part');
