@@ -18,7 +18,7 @@ if (!defined('IN_CMS')) {
  */
 Plugin::setInfos(array(
 		'id' => 'part_revisions',
-		'title' => __('Page Part revisions'),
+		'title' => __('Page Part Revisions'),
 		'description' => __('Provides Page Part revisions history management.'),
 		'version' => '0.0.1',
 		'license' => 'GPL',

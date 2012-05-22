@@ -20,7 +20,7 @@ if (!defined('IN_CMS')) {
 $success = true;
 $infoMessages = array();
 $errorMessages = array();
-
+	$PDO = Record::getConnection();
 $driver = strtolower($PDO->getAttribute(Record::ATTR_DRIVER_NAME));
 
 if ($driver == 'mysql') {
@@ -69,7 +69,7 @@ if ($driver == 'mysql') {
 	//	$infoMessages[] = 'Developer role not found!';
 	//}
 
-	$PDO = Record::getConnection();
+
 
 	// setup the table
 	$sql = "CREATE TABLE IF NOT EXISTS `".TABLE_PREFIX."page_part_revision` (
