@@ -20,7 +20,7 @@ Plugin::setInfos(array(
 		'id' => 'part_revisions',
 		'title' => __('Page Part Revisions'),
 		'description' => __('Provides Page Part revisions history management.'),
-		'version' => '0.0.1',
+		'version' => '0.0.2',
 		'license' => 'GPL',
 		'author' => 'Marek Murawski',
 		'website' => 'http://www.marekmurawski.pl/',
