@@ -4,13 +4,17 @@ if (!isset($existingParts)) {$existingParts = PartRevision::findExistingNamesByP
 if (!isset($deletedParts)) {$deletedParts = array_diff($partNames, $existingParts);}
 //print_r($page_id);
 //print_r($part_name_to_show);
+if (isset($part_name_to_show) && $part_name_to_show!=='') {
+	$partRevisions = PartRevision::findByPageIdAndName($page_id,$part_name_to_show);
+	$nameIsDefined = true;
+	echo '<p><strong>' . $part_name_to_show . '</strong> ' . __('part revisions') . ' [' . count($partRevisions).' '. __('total') . ']</p>';
+} else {
+	$partRevisions = PartRevision::findByPageId($page_id);
+	$nameIsDefined = false;
+	echo '<p><strong>' . __('All part revisions of this page ') . '</strong> [' . count($partRevisions).' '. __('total') . ']</p>';
+} 
 ?>
-<?php if (isset($part_name_to_show) && $part_name_to_show!==''): ?>
-<p><strong><?php echo $part_name_to_show; ?></strong></p>
-<?php else: ?>
-<p><strong>all part revisions</strong></p>
-<?php endif; ?>
-
+<div id="parts_list_page_container">
 <table id="part_revisions_list">
 	<thead>
 		<td class="name">Name</td>
@@ -22,27 +26,29 @@ if (!isset($deletedParts)) {$deletedParts = array_diff($partNames, $existingPart
 	</thead>
 	<tbody>
 <?php
-if (isset($part_name_to_show) && $part_name_to_show!=='') {
-$partRevisions = PartRevision::findByPageIdAndName($page_id,$part_name_to_show);
-} else {
-$partRevisions = PartRevision::findByPageId($page_id);
-}
+
 	if (count($partRevisions)>0) {
 	foreach ($partRevisions as $partRevision) {
-		(in_array($partRevision->name, $deletedParts)) ? $delClass = ' deleted' : $delClass = '';
+		$partIsDeleted = in_array($partRevision->name, $deletedParts);
+		if ($partIsDeleted) {$delClass = ' deleted';} else {$delClass = '';}
 		echo '<tr class="' .  even_odd() . $delClass . '">';
 		echo '<td class="name">' . $partRevision->name . '</td>' . 
 		     '<td class="updated_by">' . $partRevision->updated_by_name . '</td>' . 
 		     '<td class="size">' . $partRevision->size . '</td>' .
 		     '<td class="filter">' . $partRevision->filter_id . '</td>' .
-		     '<td class="date">' . $partRevision->updated_on . '</td>' . 
+		     '<td class="date"><div class="daterelative">' . DateDifference::getString(new DateTime($partRevision->updated_on)) .'</div><div class="dateabsolute">' . $partRevision->updated_on . '</div></td>' . 
 		     '<td class="actions">' . // actions below
 			'<div class="actions_wrapper">' . 
-			'<a href="' . get_url('plugin/part_revisions/delete') . '/' . (int)$partRevision->id . '/' . (int)$page_id . '"><img src="' . ICONS_URI.'delete-16.png' . '" alt="'.__('delete revision'). '" title="'.__('delete revision').'"></a> ' .
-			'<a href="#" class="preview_revision" rel="'.(int)$partRevision->id.'"><img src="' . PLUGINS_URI.'part_revisions/icons/magnifier-zoom.png' . '" alt="'.__('preview revision'). '" title="'.__('preview revision').'"></a> ' .
-			'<a href="#" class="diff_revision" rel="'.(int)$partRevision->id.'"><img src="' . PLUGINS_URI.'part_revisions/icons/diff-16.png' . '" alt="'.__('show differences'). '" title="'.__('show differences').'"></a> ' .
-			'<a href="#" class="restore_revision" rel="'.(int)$partRevision->id.'"><img src="' . ICONS_URI.'open-16.png' . '" alt="'.__('restore revision'). '" title="'.__('restore revision').'"></a> ' .
-			'</div>' .		  
+			'<a href="' . get_url('plugin/part_revisions/delete') . '/' . (int)$partRevision->id . '/' . (int)$page_id . '"><img src="' . PLUGINS_URI.'part_revisions/icons/delete-16.png' . '" alt="'.__('delete THIS revision'). '" title="'.__('delete THIS revision').'"></a> ' .
+			'<a href="#" class="preview_revision" rel="'.(int)$partRevision->id.'"><img src="' . PLUGINS_URI.'part_revisions/icons/magnifier-zoom.png' . '" alt="'.__('preview revision'). '" title="'.__('preview this revision').'"></a> ';
+			if (! $partIsDeleted) { // show diff button for existing parts
+				echo	'<a href="#" class="diff_revision" rel="'.(int)$partRevision->id.'"><img src="' . PLUGINS_URI.'part_revisions/icons/diff-16.png' . '" alt="'.__('show diff to current'). '" title="'.__('show diff to current').'"></a> ';
+			}
+			echo	'<a href="' . get_url('plugin/part_revisions/revert') . '/' . (int)$partRevision->id . '" class="revert_revision"><img src="' . PLUGINS_URI.'part_revisions/icons/revert-16.png' . '" alt="'.__('revert this revision'). '" title="'.__('revert revision').'"></a> ';
+			if ($nameIsDefined) { // show button to cut off older revisions		
+				echo	'<a href="' . get_url('plugin/part_revisions/deleteolder') . '/' . (int)$partRevision->id . '/' . (int)$page_id . '"><img src="' . PLUGINS_URI.'part_revisions/icons/deleteolder-16.png' . '" alt="'.__('delete all OLDER revisions'). '" title="'.__('delete all OLDER revisions').'"></a> ';
+			}
+		echo 	'</div>' .		  
 		     '</td>'; 
 		echo '</tr>';
 	}
@@ -53,3 +59,4 @@ $partRevisions = PartRevision::findByPageId($page_id);
 ?>	
 	</tbody>
 </table>
+</div>

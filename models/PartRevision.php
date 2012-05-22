@@ -21,6 +21,7 @@ class PartRevision extends Record {
 	$this->updated_on = date('Y-m-d H:i:s');
         $this->updated_by_id = AuthUser::getId();
         $this->updated_by_name = AuthUser::getUserName();
+	$this->size = mb_strlen($this->content);
 	
         if ( ! empty($this->filter_id))
             $this->content_html = Filter::get($this->filter_id)->apply($this->content);

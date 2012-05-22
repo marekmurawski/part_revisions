@@ -60,20 +60,21 @@ function show_part_revisions_saved_info($page) {
 }
 
 function save_old_part(&$part) {
-	$oldpart = PagePart::findByIdFrom('PagePart', $part->id);
-        //$savedParts = array();
-		if ($oldpart->content !== $part->content) { // the content has changed
-				$partRevision = new PartRevision;
-				$partRevision->content		= $oldpart->content;
-				$partRevision->content_html	= $oldpart->content_html;
-				$partRevision->filter_id	= $oldpart->filter_id;
-				$partRevision->name		= $oldpart->name;
-				$partRevision->page_id		= $oldpart->page_id;
-				$partRevision->size		= mb_strlen($oldpart->content);
-				$partRevision->save();
-				$savedParts = Flash::get('page_revisions_saved_parts');
-				$savedParts[] = $oldpart->name;
-				Flash::setNow('page_revisions_saved_parts', $savedParts);
-		}
+	if (isset($part->id)) { // $part->id is set, so it's changed page, not new one
+		$oldpart = PagePart::findByIdFrom('PagePart', $part->id);
+		//$savedParts = array();
+			if ($oldpart->content != $part->content) { // the content has changed
+					$partRevision = new PartRevision;
+					$partRevision->content		= $oldpart->content;
+					$partRevision->content_html	= $oldpart->content_html;
+					$partRevision->filter_id	= $oldpart->filter_id;
+					$partRevision->name		= $oldpart->name;
+					$partRevision->page_id		= $oldpart->page_id;
+					$partRevision->save();
+					$savedParts = Flash::get('page_revisions_saved_parts');
+					$savedParts[] = $oldpart->name;
+					Flash::setNow('page_revisions_saved_parts', $savedParts);
+			}
+	}
 	return $part;
 }

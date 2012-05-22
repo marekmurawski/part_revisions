@@ -17,14 +17,13 @@ if (!defined('IN_CMS')) { exit(); }
 ?>
 <h1><?php echo __('Recent Part Revisions'); ?></h1>
 <div id="pr-recent-list" style="margin: 1em auto; padding: 0.1em;">
-	<div class ="pagination">
 		<?php
 		use_helper('Pagination');
 		$listLimit = 20;
 		$listCount = Record::countFrom('PartRevision');
 		$listOffset = ($page_number-1) * $listLimit;
 		($listOffset>0) ? $offsetQuery = ' OFFSET '.$listOffset : $offsetQuery = '';
-		$partRevisions = PartRevision::findAllFrom('PartRevision', '1=1 ORDER BY updated_on DESC LIMIT ' . $listLimit . $offsetQuery);
+		$partRevisions = Record::findAllFrom('PartRevision', '1=1 ORDER BY updated_on DESC LIMIT ' . $listLimit . $offsetQuery);
 		$pagination = new Pagination(array(
 		'base_url'		=> get_url('plugin/part_revisions/recent/'),
 		'total_rows'         => $listCount, // Total number of items (database results)
@@ -32,14 +31,17 @@ if (!defined('IN_CMS')) { exit(); }
 		'num_links'          => 3, // Number of "digit" links to show before/after the currently viewed page
 		'cur_page'           => $page_number, // The current page being viewed
 		));
-			echo __('Total') . ': ' . $listCount . ' ' . __('revisions');
-			echo $pagination->createLinks();
+		?>
+	<div class ="pagination">
+		<?php
+		echo __('Total') . ': ' . $listCount . ' ' . __('revisions');
+		echo $pagination->createLinks();
 		?>
 	</div>
 <table id="part_revisions_list">
 	<thead>
 		<td class="page_id">Page id</td>
-		<td class="name">Name</td>
+		<td class="name">                                                                                          Name</td>
 		<td class="updated_by">Updated by</td>
 		<td class="size">Size</td>
 		<td class="filter">Filter</td>
@@ -51,7 +53,7 @@ if (!defined('IN_CMS')) { exit(); }
 	if (count($partRevisions)>0) {
 	foreach ($partRevisions as $partRevision) {
 		echo '<tr class="' .  even_odd() . '">';
-		echo '<td class="page_id">' . $partRevision->page_id . '</td>' . 
+		echo '<td class="page_id">' . (int)$partRevision->page_id .' <a href="' . get_url('/page/edit') . '/' . (int)$partRevision->page_id . '">' . __('edit').'</a></td>' . 
 		     '<td class="name">' . $partRevision->name . '</td>' . 
 		     '<td class="updated_by">' . $partRevision->updated_by_name . '</td>' . 
 		     '<td class="size">' . $partRevision->size . '</td>' .
@@ -73,6 +75,12 @@ if (!defined('IN_CMS')) { exit(); }
 ?>	
 	</tbody>
 </table>
+	<div class ="pagination">
+		<?php
+		echo __('Total') . ': ' . $listCount . ' ' . __('revisions');
+		echo $pagination->createLinks();
+		?>
+	</div>	
 </div>
 <div id="boxes">
 <?php
@@ -81,3 +89,24 @@ if (!defined('IN_CMS')) { exit(); }
                     )); 
 ?>
 </div>
+<script type="text/javascript">
+// <![CDATA[
+    $(document).ready(function() {
+        // Make all modal dialogs draggable
+        $("#boxes .window").draggable({
+            addClasses: false,
+            containment: 'window',
+            scroll: false,
+            handle: '.titlebar'
+        })
+
+        //if close button is clicked
+        $('#boxes .window .close').click(function (e) {
+            //Cancel the link behavior
+            e.preventDefault();
+            $('#mask, .window').hide();
+        });
+
+    });
+// ]]>
+</script>

@@ -7,30 +7,34 @@ $deletedParts = array_diff($partNames, $existingParts);
 <table>
 	<tr>
 		<td style="vertical-align: top; width: 200px;">
-			<p>
-			<select id="part_select">
-				<option value="">-- <?php echo __('EXISTING PARTS'); ?> --</option>
+			<ul>
+				
+				<li><a class="filter_part" href="#" rel=""><?php echo __('All parts'); ?></a></li>
 				<?php
 				foreach ($existingParts as $partName):
 				?>
-				<option value="<?php echo $partName; ?>"><?php echo $partName; ?></option>
+				<li><a class="filter_part" href="#" rel="<?php echo $partName; ?>"><?php echo $partName; ?></a></li>
 				<?php 
 				endforeach;
 				?>
-				<option value="">-- <?php echo __('DELETED PARTS'); ?> --</option>
-				<?php
+				<?php // now the deleted parts
 				foreach ($deletedParts as $partName):
 				?>
-				<option value="<?php echo $partName; ?>"><?php echo $partName; ?></option>
+				<li><a class="filter_part" href="#" rel="<?php echo $partName; ?>"><?php echo $partName .' '. __('[deleted]'); ?></a></li>				
 				<?php 
 				endforeach;
 				?>
-			</select>
+			</ul>
+
+			<p style="text-align: center; margin-top: 20px">
+			<a href="<?php echo get_url('plugin/part_revisions/purgebypage').'/'.(int)$page_id ?>">
+				<img src="<?php echo PLUGINS_URI.'part_revisions/icons/delete-folder-32.png'; ?>"/><br/>
+				<?php echo __('Purge all revisions of this page');?>
+			</a>
 			</p>
-			<p><a href="<?php echo get_url('plugin/part_revisions/purgebypage').'/'.(int)$page_id ?>"><img src="<?php echo PLUGINS_URI.'part_revisions/icons/delete-folder-32.png'; ?>"/></a></p>
 		</td>
 		<td style="vertical-align: top;">
-			<div id="parts-revisions-list">
+			<div id="part_revisions_container">
 			<?php
 				echo new View('../../plugins/part_revisions/views/editpage/parts_list', array(
 					'page_id'           => $page_id,

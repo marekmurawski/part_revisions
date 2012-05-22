@@ -18,7 +18,7 @@
 		</div> 
 		
 		<div class="content">
-			<p><?php echo __('This is unfiltered content differences preview'); ?></p>
+			<p><?php echo __('This is unfiltered content <b>diff</b> preview'); ?></p>
 			<div id="part-revision-preview-diff">
 			</div>
 		</div>
@@ -96,9 +96,17 @@
             $(id+" :input:visible:enabled:first").focus();
             // END show popup
         });
-	// @todo Make passing name more foolproof (urlencode????)
+
+        $('.filter_part').live('click', function() {
+	    var partname = $(this).attr('rel');
+	    
+	    $('#part_revisions_container').load('<?php echo get_url('plugin/part_revisions/getlist') ?>', {name: partname, page_id: <?php echo $page_id ?>});
+	    });
+
+	// @todo Make passing name more foolproof (urlencode????)	
 	$('#part_select').change(function() {
-	    $('#parts-revisions-list').load('<?php echo get_url('plugin/part_revisions/getlist') ?>', {name: $('#part_select').val(), page_id: <?php echo $page_id ?>});
+	    setConfirmUnload(false); //prevent confirming changes...
+	    $('#part_revisions_container').load('<?php echo get_url('plugin/part_revisions/getlist') ?>', {name: $('#part_select').val(), page_id: <?php echo $page_id ?>});
         });
 // ]]>
 </script>
