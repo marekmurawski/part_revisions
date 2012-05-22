@@ -103,11 +103,6 @@
 	    $('#part_revisions_container').load('<?php echo get_url('plugin/part_revisions/getlist') ?>', {name: partname, page_id: <?php echo $page_id ?>});
 	    });
 
-	// @todo Make passing name more foolproof (urlencode????)	
-	$('#part_select').change(function() {
-	    setConfirmUnload(false); //prevent confirming changes...
-	    $('#part_revisions_container').load('<?php echo get_url('plugin/part_revisions/getlist') ?>', {name: $('#part_select').val(), page_id: <?php echo $page_id ?>});
-        });
 // ]]>
 </script>
 	

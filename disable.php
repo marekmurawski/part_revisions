@@ -5,16 +5,16 @@ if (!defined('IN_CMS')) {
 	exit();
 }
 /**
- * Restrict PHP Plugin for Wolf CMS.
- * Provides PHP code restriction in page parts based on roles and/or permissions
- * 
+ * Part Revisions Plugin for Wolf CMS
+ * Provides Page Part revisions history management.
  * 
  * @package Plugins
- * @subpackage restrict_php
+ * @subpackage part_revisions
  *
  * @author Marek Murawski <http://marekmurawski.pl>
  * @copyright Marek Murawski, 2012
  * @license http://www.gnu.org/licenses/gpl.html GPLv3 license
  */
+
 Flash::set('success', __('Successfully deactivated Part Revisions plugin!'));
 exit();

@@ -8,8 +8,8 @@ $deletedParts = array_diff($partNames, $existingParts);
 	<tr>
 		<td style="vertical-align: top; width: 200px;">
 			<ul>
-				
-				<li><a class="filter_part" href="#" rel=""><?php echo __('All parts'); ?></a></li>
+				<p><strong><?php echo __('Part filtering')?>:</strong></p>
+				<li style="margin-bottom: 5px;"><a class="filter_part" href="#" rel=""><?php echo __('show all parts'); ?></a></li>
 				<?php
 				foreach ($existingParts as $partName):
 				?>
@@ -20,18 +20,19 @@ $deletedParts = array_diff($partNames, $existingParts);
 				<?php // now the deleted parts
 				foreach ($deletedParts as $partName):
 				?>
-				<li><a class="filter_part" href="#" rel="<?php echo $partName; ?>"><?php echo $partName .' '. __('[deleted]'); ?></a></li>				
+				<li><i><a class="filter_part" href="#" rel="<?php echo $partName; ?>"><?php echo $partName .' '. __('[deleted]'); ?></a></i></li>				
 				<?php 
 				endforeach;
 				?>
 			</ul>
-
-			<p style="text-align: center; margin-top: 20px">
-			<a href="<?php echo get_url('plugin/part_revisions/purgebypage').'/'.(int)$page_id ?>">
-				<img src="<?php echo PLUGINS_URI.'part_revisions/icons/delete-folder-32.png'; ?>"/><br/>
+			<p style="margin-top: 15px;"><strong><?php echo __('Actions')?>:</strong></p>
+			<p>
+				<a href="<?php echo get_url('plugin/part_revisions/purgebypage').'/'.(int)$page_id ?>">
+				<img style="vertical-align: top; float: left;" src="<?php echo PLUGINS_URI.'part_revisions/icons/delete-folder-32.png'; ?>"/>
 				<?php echo __('Purge all revisions of this page');?>
 			</a>
 			</p>
+
 		</td>
 		<td style="vertical-align: top;">
 			<div id="part_revisions_container">

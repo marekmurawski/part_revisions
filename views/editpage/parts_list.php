@@ -39,13 +39,13 @@ if (isset($part_name_to_show) && $part_name_to_show!=='') {
 		     '<td class="date"><div class="daterelative">' . DateDifference::getString(new DateTime($partRevision->updated_on)) .'</div><div class="dateabsolute">' . $partRevision->updated_on . '</div></td>' . 
 		     '<td class="actions">' . // actions below
 			'<div class="actions_wrapper">' . 
-			'<a href="' . get_url('plugin/part_revisions/delete') . '/' . (int)$partRevision->id . '/' . (int)$page_id . '"><img src="' . PLUGINS_URI.'part_revisions/icons/delete-16.png' . '" alt="'.__('delete THIS revision'). '" title="'.__('delete THIS revision').'"></a> ' .
 			'<a href="#" class="preview_revision" rel="'.(int)$partRevision->id.'"><img src="' . PLUGINS_URI.'part_revisions/icons/magnifier-zoom.png' . '" alt="'.__('preview revision'). '" title="'.__('preview this revision').'"></a> ';
 			if (! $partIsDeleted) { // show diff button for existing parts
 				echo	'<a href="#" class="diff_revision" rel="'.(int)$partRevision->id.'"><img src="' . PLUGINS_URI.'part_revisions/icons/diff-16.png' . '" alt="'.__('show diff to current'). '" title="'.__('show diff to current').'"></a> ';
 			}
+			echo '<a href="' . get_url('plugin/part_revisions/delete') . '/' . (int)$partRevision->id . '/' . (int)$page_id . '"><img src="' . PLUGINS_URI.'part_revisions/icons/delete-16.png' . '" alt="'.__('delete THIS revision'). '" title="'.__('delete THIS revision').'"></a> ';
 			echo	'<a href="' . get_url('plugin/part_revisions/revert') . '/' . (int)$partRevision->id . '" class="revert_revision"><img src="' . PLUGINS_URI.'part_revisions/icons/revert-16.png' . '" alt="'.__('revert this revision'). '" title="'.__('revert revision').'"></a> ';
-			if ($nameIsDefined) { // show button to cut off older revisions		
+			if ($nameIsDefined && (count($partRevisions)>1)) { // show button to cut off older revisions		
 				echo	'<a href="' . get_url('plugin/part_revisions/deleteolder') . '/' . (int)$partRevision->id . '/' . (int)$page_id . '"><img src="' . PLUGINS_URI.'part_revisions/icons/deleteolder-16.png' . '" alt="'.__('delete all OLDER revisions'). '" title="'.__('delete all OLDER revisions').'"></a> ';
 			}
 		echo 	'</div>' .		  
@@ -53,7 +53,7 @@ if (isset($part_name_to_show) && $part_name_to_show!=='') {
 		echo '</tr>';
 	}
 	} else {
-		//echo '<tr><td class="name" colspan="6"><em>No saved revisions for ' . $part_name_to_show . '</em></td></tr>';
+		echo '<tr><td class="name" colspan="6"><em>'. __('No saved revisions yet. Try editing some parts!') . '</em></td></tr>';
 	}
 	
 ?>	

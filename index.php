@@ -18,8 +18,8 @@ if (!defined('IN_CMS')) {
  */
 Plugin::setInfos(array(
 		'id' => 'part_revisions',
-		'title' => __('Page part revisions'),
-		'description' => __('Page part revision history'),
+		'title' => __('Page Part revisions'),
+		'description' => __('Provides Page Part revisions history management.'),
 		'version' => '0.0.1',
 		'license' => 'GPL',
 		'author' => 'Marek Murawski',
