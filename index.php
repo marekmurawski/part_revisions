@@ -20,12 +20,12 @@ Plugin::setInfos(array(
 		'id' => 'part_revisions',
 		'title' => __('Page Part Revisions'),
 		'description' => __('Provides Page Part revisions history management.'),
-		'version' => '0.0.2',
+		'version' => '0.0.3',
 		'license' => 'GPL',
 		'author' => 'Marek Murawski',
 		'website' => 'http://www.marekmurawski.pl/',
-		//'update_url' => 'http://www.wolfcms.org/plugin-versions.xml',
-		'require_wolf_version' => '0.7.5'
+		'update_url'  => 'http://marekmurawski.pl/static/wolfplugins/plugin-versions.xml',
+		'require_wolf_version' => '0.7.3' // 0.7.5SP-1 fix -> downgrading requirement to 0.7.3
 ));
 
 /**
@@ -70,10 +70,12 @@ function save_old_part(&$part) {
 					$partRevision->filter_id	= $oldpart->filter_id;
 					$partRevision->name		= $oldpart->name;
 					$partRevision->page_id		= $oldpart->page_id;
-					$partRevision->save();
+					if ($partRevision->save()) {
 					$savedParts = Flash::get('page_revisions_saved_parts');
 					$savedParts[] = $oldpart->name;
 					Flash::setNow('page_revisions_saved_parts', $savedParts);
+					return true;
+					} else { return false;} // @todo Provide feedback if error saving
 			}
 	}
 	return $part;
