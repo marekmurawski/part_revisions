@@ -15,7 +15,6 @@ class PartRevision extends Record {
     public $updated_by_id;
     public $updated_by_name;
 
-
     public function beforeSave() {
     // apply filter to save is generated result in the database
 	$this->updated_on = date('Y-m-d H:i:s');
@@ -23,7 +22,7 @@ class PartRevision extends Record {
         $this->updated_by_name = AuthUser::getUserName();
 	$this->size = mb_strlen($this->content);
 	
-        if ( ! empty($this->filter_id))
+        if ( ! empty($this->filter_id)) // @todo possible problems when saving part with non-existing filter set
             $this->content_html = Filter::get($this->filter_id)->apply($this->content);
         else
             $this->content_html = $this->content;
