@@ -27,12 +27,12 @@ if (!defined('IN_CMS')) { exit(); }
 <table id="part_revisions_list">
 	<thead>
 		<td class="page_id">P. id</td>
-		<td class="name">Name</td>
-		<td class="updated_by">Updated by</td>
-		<td class="size">Size</td>
-		<td class="filter">Filter</td>
-		<td class="date">Date</td>
-		<td class="actions">Actions</td>
+		<td class="name"><?php echo __('Name'); ?></td>
+		<td class="updated_by"><?php echo __('Updated by'); ?></td>
+		<td class="size"><?php echo __('Size'); ?></td>
+		<td class="filter"><?php echo __('Filter'); ?></td>
+		<td class="date"><?php echo __('Date'); ?></td>
+		<td class="actions"><?php echo __('Actions'); ?></td>
 	</thead>
 	<tbody>
 <?php
@@ -47,8 +47,8 @@ if (!defined('IN_CMS')) { exit(); }
 		     '<td class="date">' . DateDifference::getString(new DateTime($partRevision->updated_on)) . '</td>' . 
 		     '<td class="actions">' . // actions below
 			'<div class="actions_wrapper">' . 
-			'<a href="' . get_url('plugin/part_revisions/delete') . '/' . (int)$partRevision->id . '/0"><img src="' . ICONS_URI.'delete-16.png' . '"></a> ' .
-			'<a href="#" class="preview_revision" rel="'.(int)$partRevision->id.'"><img src="' . PLUGINS_URI.'part_revisions/icons/magnifier-zoom.png' . '"></a> ' .
+			'<a href="' . get_url('plugin/part_revisions/delete') . '/' . (int)$partRevision->id . '/0"><img src="' . PLUGINS_URI.'part_revisions/icons/delete-16.png' . '" alt="'.__('delete THIS revision'). '" title="'.__('delete THIS revision').'"></a> ' .
+			'<a href="#" class="preview_revision" rel="'.(int)$partRevision->id.'"><img src="' . PLUGINS_URI.'part_revisions/icons/magnifier-zoom.png' . '" alt="'.__('preview revision'). '" title="'.__('preview this revision').'"></a> ' .
 			//'<a href="#" class="diff_revision" rel="'.(int)$partRevision->id.'"><img src="' . PLUGINS_URI.'part_revisions/icons/diff-16.png' . '" alt="'.__('show differences'). '" title="'.__('show differences').'"></a> ' .
 			'</div>' .
 		     '</td>'; 
@@ -67,18 +67,6 @@ if (!defined('IN_CMS')) { exit(); }
 		echo $pagination->createLinks();
 		?>
 	</div>	
-	<div style="width: 50%;">
-	<p>
-		<?php echo __('This list shows recently changed Page Parts in the site. Here you can only <b>preview</b> the contents of saved Page Parts or <b>delete</b> it.'); ?>
-	</p>
-	<p>
-		<?php echo __('If you want to manage saved page parts (revert them, compare to current or delete more than one), you need to go to standard Wolf Page editing, 
-			and use the "Part Revisions" tab there.'); ?>
-	</p>
-	<p>
-		<?php echo __('Alternatively, you can jump to the Page containing Part Revision listed above by clicking "edit" in the firs column of the list.'); ?>
-	</p>
-	</div>
 </div>
 
 <div id="boxes">
