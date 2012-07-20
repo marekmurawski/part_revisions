@@ -17,12 +17,12 @@ if (isset($part_name_to_show) && $part_name_to_show!=='') {
 <div id="parts_list_page_container">
 <table id="part_revisions_list">
 	<thead>
-		<td class="name">Name</td>
-		<td class="updated_by">Updated by</td>
-		<td class="size">Size</td>
-		<td class="filter">Filter</td>
-		<td class="date">Date</td>
-		<td class="actions">Actions</td>
+		<td class="name"><?php echo __('Name'); ?></td>
+		<td class="updated_by"><?php echo __('Updated by'); ?></td>
+		<td class="size"><?php echo __('Size'); ?></td>
+		<td class="filter"><?php echo __('Filter'); ?></td>
+		<td class="date"><?php echo __('Date'); ?></td>
+		<td class="actions"><?php echo __('Actions'); ?></td>		
 	</thead>
 	<tbody>
 <?php
