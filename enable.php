@@ -34,43 +34,6 @@ if ($driver == 'mysql') {
 		$infoMessages[] = 'part_revisions_manage permission already exists!';
 	}
 
-	//if (!Role::findByName('php editor')) {
-	//	$role = new Role(array('name' => 'php editor'));
-	//	if (!$role->save()) {
-	//		$success = false;
-	//		$errorMessages[] = __('Could not create Php Editor role!');
-	//	} else $infoMessages[] = 'Created Php Editor role!';
-	//} else {
-	//	$infoMessages[] = 'Php Editor role already exists!';
-	//}
-	//
-	//$perm = Permission::findByName('edit_parts_php');
-	//$role = Role::findByName('php editor');
-	//if (!($role && $perm)) {
-	//	$rp = new RolePermission(array('permission_id' => $perm->id, 'role_id' => $role->id));
-	//	if (!$rp->save()) {
-	//		$success = false;
-	//		$errorMessages[] = __('Could not assign edit_parts_php permission to Php Editor role!');
-	//	} else $infoMessages[] = 'Assigned edit_parts_php permission to Php Editor role!';
-	//}
-
-	//if ($developerRole = Role::findByName('developer')) {
-	//
-	//	$perm = Permission::findByName('part_revisions_manage');
-	//	$rp = RolePermission::findPermissionsFor($developerRole->id);
-	//	if (!RolePermission::findOneFrom('RolePermission', 'role_id=? AND permission_id=?', array($developerRole->id, $perm->id))) {
-	//		$rp[] = $perm;
-	//		if (!RolePermission::savePermissionsFor($developerRole->id, $rp)) {
-	//			$success = false;
-	//			$errorMessages[] = __('Could not assign part_revisions_manage permission to Developer role!');
-	//		} else $infoMessages[] = 'Assigned part_revisions_manage permission to Developer role!';
-	//	}
-	//} else {
-	//	$infoMessages[] = 'Developer role not found!';
-	//}
-
-
-
 	// setup the table
 	$sql = "CREATE TABLE IF NOT EXISTS `".TABLE_PREFIX."page_part_revision` (
 	`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
