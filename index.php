@@ -37,7 +37,7 @@ define('PR_CSS_ID', 'part_revisions');
 // Load the Page Part Revision class into the system.
 AutoLoader::addFile('PartRevision', PR_ROOT_DIR.'models/PartRevision.php');
 AutoLoader::addFolder(PR_ROOT_DIR.'lib');
-Plugin::addController('part_revisions', __('Part Revisions'), 'admin_view');  
+Plugin::addController('part_revisions', __('Part Revisions'), 'admin_edit');  
 
 Observer::observe('part_edit_before_save', 'save_old_part');
 Observer::observe('part_add_before_save', 'save_old_part');
@@ -53,6 +53,19 @@ function show_part_revisions_saved_info($page) {
 		
 	Flash::set('info', __('The following part revisions were saved:') . '<br/>' .
 	  implode('<br/>', $savedParts));	
+					// ****** DASHBOARD PLUGIN INTEGRATION ********
+						if (Plugin::isEnabled('dashboard')) {
+							$linked_title = sprintf('<a href="%s">%s</a>', get_url('page/edit/'.$page->id), $page->title);
+							$message = __('Part Revision(s) of <b>:partname</b> saved in <b>:page</b> by :name.', 
+									array(
+										':name' => AuthUser::getRecord()->name,
+										':page' => $linked_title,
+										':partname' => implode(', ', $savedParts),
+		        						     )
+							  );
+							dashboard_log_event($message, 'part_revisions');
+						}
+					// *** END OF DASHBOARD PLUGIN INTEGRATION ***
 	}
 
 	return $page;
