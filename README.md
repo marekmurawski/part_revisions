@@ -11,13 +11,14 @@ Provides Page Part revisions history management.
 - ... and on individual pages (all revisions or filtered by name)
 - Previewing differences (changes) between a given revision and the current Page Part contents
 - MultiEdit plugin compatible (new in 0.0.3)
+- Dashboard plugin compatible (new in 0.0.4)
 
 Changelog
 ---------
 
 0.0.4
 
-- compatibility with Dashboard plugin
+- Dashboard plugin compatible
 - translation for polish language
 
 0.0.3
