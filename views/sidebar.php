@@ -37,3 +37,14 @@ if (!defined('IN_CMS')) { exit(); }
         </a>	    
     </p>
 </div>
+<div class="box">
+	<p>
+		<?php echo __('This list shows recently changed Page Parts in the site. Here you can only <b>preview</b> the contents of saved Page Parts or <b>delete</b> it.'); ?>
+	</p>
+	<p>
+		<?php echo __('If you want to manage saved page parts (revert them, compare to current or delete more than one), you need to go to standard Wolf Page editing and use the "Part Revisions" tab there.'); ?>
+	</p>
+	<p>
+		<?php echo __('Alternatively, you can jump to the Page containing Part Revision listed above by clicking page ID in the first column of the list.'); ?>
+	</p>
+</div>
