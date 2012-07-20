@@ -166,7 +166,7 @@ class PartRevisionsController extends PluginController {
 			$new = str_replace('<br />','<br/>',$new);
 			header('Content-type: text/html; charset=UTF-8');
 			echo SimpleDiff::htmlDiff($old,$new);
-		} else echo __("The part ':part' doesn't currently exist in this page. Nothing to compare.", array(":part" => $old->name));
+		} else echo __("The part <b>:part</b> does not currently exist in this page. Nothing to compare.", array(":part" => $old->name));
 	}
 	
 	public function getlist() {
