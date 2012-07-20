@@ -19,14 +19,14 @@ if (!defined('IN_CMS')) { exit(); }
     <p class="button">
         <a href="<?php echo get_url('plugin/part_revisions/recent'); ?>">
             <img src="<?php echo PLUGINS_URI.'part_revisions/icons/page-32.png'; ?>" align="middle" title="<?php echo __('Recent Part Revisions'); ?>" alt="<?php echo __('Recent Part Revisions'); ?>" />
-            <?php echo __('Recent Part Revisions'); ?>
+            <?php echo __('Recent Revisions'); ?>
         </a>
     </p>
 
     <p class="button">
         <a href="<?php echo get_url('plugin/part_revisions/purgeall'); ?>">
             <img src="<?php echo PLUGINS_URI.'part_revisions/icons/delete-folder-32.png'; ?>" align="middle" title="<?php echo __('Purge all page parts'); ?>" alt="<?php echo __('Purge all page parts'); ?>" />
-            <?php echo __('Purge all page parts'); ?>
+            <?php echo __('Purge all Revisions'); ?>
         </a>
     </p>
     
