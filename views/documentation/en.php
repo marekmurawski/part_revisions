@@ -4,7 +4,7 @@ if (!defined('IN_CMS')) {
 }
 ?>
 
-<h1><?php echo __('Documentation'); ?></h1>
+<h1>Documentation</h1>
 
 <h2>Part Revisions plugin</h2>
 <div>
