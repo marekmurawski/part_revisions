@@ -7,6 +7,8 @@
     overflow-y: scroll;
     height: 150px;
 }
+
+.part_revisions_deleted_parts_list a { color: #888; }
 #part_revisions_list { border: 1px solid #ccc; width: 100% }
 
 #part_revisions_list td { background: none; cursor: default; padding: 3px;}
@@ -32,6 +34,9 @@
 
 #part_revisions_list td.size 
 { text-align: right; width: 60px; }
+
+#part_revisions_list td.page_id 
+{ text-align: center; width: 40px; }
 
 #part_revisions_list td.name,
 #part_revisions_list td.updated_by { width: 120px; }
