@@ -71,11 +71,11 @@ class PartRevision extends Record {
     }
     
     public static function deleteByPageId($id) {
-	    self::deleteWhere('PartRevision', 'page_id='.(int)$id);
+	    return self::deleteWhere('PartRevision', 'page_id='.(int)$id);
     }
 
     public static function deleteById($id) {
-	    self::deleteWhere('PartRevision', 'id='.(int)$id);
+	    return self::deleteWhere('PartRevision', 'id='.(int)$id);
     }
     
 } // end PagePart class
