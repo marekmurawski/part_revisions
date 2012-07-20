@@ -44,8 +44,9 @@ class PartRevisionsController extends PluginController {
 					$partRevision->filter_id	= $partToReplace->filter_id;
 					$partRevision->name		= $partToReplace->name;
 					$partRevision->page_id		= $partToReplace->page_id;
-					$partRevision->save();
-					Flash::set('success', __('Reverted revision of part - :part', array(':part'=>$partToReplace->name)));
+					if ($partRevision->save()) {
+						Flash::set('success', __('Reverted revision of part - :part', array(':part'=>$partToReplace->name)));
+					}
 				}
 
 		if ($partToReplace==false) {$partToReplace = new PagePart;} //create PagePart if it doesn't exist
@@ -55,22 +56,62 @@ class PartRevisionsController extends PluginController {
 		$partToReplace->filter_id = $revertedPart->filter_id;
 		$partToReplace->name = $revertedPart->name;
 		$partToReplace->page_id = $revertedPart->page_id;
-		$partToReplace->save();
-		Flash::set('success', __('Restored part - :part', array(':part'=>$partToReplace->name)));
-		redirect(get_url('page/edit/'.$partToReplace->page_id));
+		if ($partToReplace->save()) {
+			Flash::set('success', __('Restored part - :part', array(':part'=>$partToReplace->name)));
+					// ****** DASHBOARD PLUGIN INTEGRATION ********
+						if (Plugin::isEnabled('dashboard')) {
+							$page = Page::findById($partToReplace->page_id);
+							$linked_title = sprintf('<a href="%s">%s</a>', get_url('page/edit/'.$page->id), $page->title);
+							$message = __('Part Revision of <b>:partname</b> was <b>restored</b> in <b>:page</b> by :name.', 
+									array(
+										':page'     => $linked_title,
+										':partname' => $revertedPart->name,
+										':name'     => AuthUser::getRecord()->name,
+		        						     )
+							  );
+							dashboard_log_event($message, 'part_revisions',DASHBOARD_LOG_ALERT);
+						}
+					// *** END OF DASHBOARD PLUGIN INTEGRATION ***				
+			redirect(get_url('page/edit/'.$partToReplace->page_id));
+		}
 		
 	}
 	
 	public function purgebypage($id) {
-		PartRevision::deleteByPageId($id);
+		if (PartRevision::deleteByPageId($id)) {
 		Flash::set('success',__('All page part revisions for page id :id deleted!', array(':id'=>$id)));
+					// ****** DASHBOARD PLUGIN INTEGRATION ********
+						if (Plugin::isEnabled('dashboard')) {
+							$page = Page::findById($id);
+							$linked_title = sprintf('<a href="%s">%s</a>', get_url('page/edit/'.$page->id), $page->title);
+							$message = __('<b>All</b> Part Revisions of <b>:page</b> were purged by :name.', 
+									array(
+										':page' => $linked_title,
+										':name' => AuthUser::getRecord()->name,
+		        						     )
+							  );
+							dashboard_log_event($message, 'part_revisions',DASHBOARD_LOG_ALERT);
+						}
+					// *** END OF DASHBOARD PLUGIN INTEGRATION ***			
 		redirect(get_url('page/edit/'.$id));
+		} // @todo What if not purged???
 	}
 
 	public function purgeall() {
-		PartRevision::deleteWhere('PartRevision', '1=1');
-		Flash::set('success',__('All page part revisions in ALL pages deleted!'));
-		redirect(get_url('plugin/part_revisions/documentation'));
+		if (PartRevision::deleteWhere('PartRevision', '1=1')) {
+			Flash::set('success',__('All page part revisions in ALL pages deleted!'));
+					// ****** DASHBOARD PLUGIN INTEGRATION ********
+						if (Plugin::isEnabled('dashboard')) {
+							$message = __('<b>All</b> Part Revisions of <b>all pages</b> were purged by :name.', 
+									array(
+										':name' => AuthUser::getRecord()->name,
+		        						     )
+							  );
+							dashboard_log_event($message, 'part_revisions',DASHBOARD_LOG_ALERT);
+						}
+					// *** END OF DASHBOARD PLUGIN INTEGRATION ***	
+			redirect(get_url('plugin/part_revisions/documentation'));
+		} // @todo What if not purged???
 	}
 
 	public function deleteolder($id, $page_id=0) { // @todo: IN AJAX $page_id will be obsolete
@@ -81,6 +122,23 @@ class PartRevisionsController extends PluginController {
 		
 		if (Record::deleteWhere('PartRevision', 'updated_on < ? AND name = ?', array ($time, $name))) {
 			Flash::set('success',__('All page part revisions of :name older than :date were deleted!', array(':name'=>$name, ':time'=>$time)));
+			
+					// ****** DASHBOARD PLUGIN INTEGRATION ********
+						if (Plugin::isEnabled('dashboard')) {
+							$page = Page::findById($part->page_id);
+							$linked_title = sprintf('<a href="%s">%s</a>', get_url('page/edit/'.$page->id), $page->title);
+							$message = __('All revisions of <b>:partname</b> older than <b>:time</b> <br/>were deleted in page <b>:page</b> by :name.', 
+									array(
+										':name' => AuthUser::getRecord()->name,
+										':page' => $linked_title,
+										':time' => $time,
+										':partname' => $name,
+		        						     )
+							  );
+							dashboard_log_event($message, 'part_revisions',DASHBOARD_LOG_ALERT);
+						}
+					// *** END OF DASHBOARD PLUGIN INTEGRATION ***				
+			
 		}
 		// go back to page editing @todo: make it AJAX
 		($page_id!=0) ? redirect(get_url('page/edit/'.$page_id)) : redirect(get_url('plugin/part_revisions/recent'));
@@ -119,8 +177,23 @@ class PartRevisionsController extends PluginController {
 	}	
 	
 	public function delete($id,$page_id=0) { // @todo: IN AJAX $page_id will be obsolete
+		$oldpart = Record::findByIdFrom('PartRevision', $id);
 		PartRevision::deleteById($id);
 		Flash::set('success',__('Deleted part revision [id - :id]!', array(':id'=>$id)));
+					// ****** DASHBOARD PLUGIN INTEGRATION ********
+						if (Plugin::isEnabled('dashboard')) {
+							$page = Page::findById($oldpart->page_id);
+							$linked_title = sprintf('<a href="%s">%s</a>', get_url('page/edit/'.$page->id), $page->title);
+							$message = __('Revision of <b>:partname</b> deleted in page <b>:page</b> by :name.', 
+									array(
+										':name' => AuthUser::getRecord()->name,
+										':page' => $linked_title,
+										':partname' => $oldpart->name,
+		        						     )
+							  );
+							dashboard_log_event($message, 'part_revisions',DASHBOARD_LOG_ALERT);
+						}
+					// *** END OF DASHBOARD PLUGIN INTEGRATION ***		
 		($page_id!=0) ? redirect(get_url('page/edit/'.$page_id)) : redirect(get_url('plugin/part_revisions/recent'));
 	}
 	
@@ -139,9 +212,12 @@ class PartRevisionsController extends PluginController {
 	}	
 
 	function recent($page_number = 1) {
-		$this->display('part_revisions/views/recent', array(
-				'page_number' => $page_number
-			));
+			if (AuthUser::hasPermission('admin_edit')) {
+			$this->display('part_revisions/views/recent', array(
+					'page_number' => $page_number
+				));
+			}
+			else redirect(URL_PUBLIC.ADMIN_DIR);
 	}
 	
 	public static function Callback_view_page_edit_tab_links($page) {
