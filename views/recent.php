@@ -26,8 +26,8 @@ if (!defined('IN_CMS')) { exit(); }
 	</div>
 <table id="part_revisions_list">
 	<thead>
-		<td class="page_id">Page id</td>
-		<td class="name">                                                                                          Name</td>
+		<td class="page_id">P. id</td>
+		<td class="name">Name</td>
 		<td class="updated_by">Updated by</td>
 		<td class="size">Size</td>
 		<td class="filter">Filter</td>
@@ -39,7 +39,7 @@ if (!defined('IN_CMS')) { exit(); }
 	if (count($partRevisions)>0) {
 	foreach ($partRevisions as $partRevision) {
 		echo '<tr class="' .  even_odd() . '">';
-		echo '<td class="page_id">' . (int)$partRevision->page_id .' <a href="' . get_url('/page/edit') . '/' . (int)$partRevision->page_id . '#part_revisions_tabcontents">' . __('edit').'</a></td>' . 
+		echo '<td class="page_id"><a href="' . get_url('/page/edit') . '/' . (int)$partRevision->page_id . '#part_revisions_tabcontents">' . (int)$partRevision->page_id . '</a></td>' . 
 		     '<td class="name">' . $partRevision->name . '</td>' . 
 		     '<td class="updated_by">' . $partRevision->updated_by_name . '</td>' . 
 		     '<td class="size">' . $partRevision->size . '</td>' .
