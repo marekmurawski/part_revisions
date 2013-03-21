@@ -16,12 +16,16 @@ Provides Page Part revisions history management.
 Changelog
 ---------
 
-0.0.4
+###### 0.0.6
+
+- fixed bug when saving page part revision for non-existing filter_id
+
+###### 0.0.4
 
 - Dashboard plugin compatible
 - translation for polish language
 
-0.0.3
+###### 0.0.3
 
 - MultiEdit plugin compatible (new in 0.0.3)
 
