@@ -20,7 +20,7 @@ Plugin::setInfos(array(
             'id'                   => 'part_revisions',
             'title'                => __('Page Part Revisions'),
             'description'          => __('Provides Page Part revisions history management.'),
-            'version'              => '0.0.4',
+            'version'              => '0.0.6',
             'license'              => 'GPL',
             'author'               => 'Marek Murawski',
             'website'              => 'http://www.marekmurawski.pl/',
@@ -41,9 +41,7 @@ Plugin::addController('part_revisions', __('Part Revisions'), 'admin_edit');
 
 Observer::observe('part_edit_before_save', 'save_old_part');
 Observer::observe('part_add_before_save', 'save_old_part');
-
 Observer::observe('page_edit_after_save', 'show_part_revisions_saved_info');
-
 Observer::observe('view_page_edit_tab_links', 'PartRevisionsController::Callback_view_page_edit_tab_links');
 Observer::observe('view_page_edit_tabs', 'PartRevisionsController::Callback_view_page_edit_tabs');
 Observer::observe('view_page_edit_popup', 'PartRevisionsController::Callback_view_page_edit_popup');

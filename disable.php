@@ -1,8 +1,8 @@
 <?php
 
 /* Security measure */
-if (!defined('IN_CMS')) {
-	exit();
+if ( !defined('IN_CMS') ) {
+    exit();
 }
 /**
  * Part Revisions Plugin for Wolf CMS
@@ -15,6 +15,5 @@ if (!defined('IN_CMS')) {
  * @copyright Marek Murawski, 2012
  * @license http://www.gnu.org/licenses/gpl.html GPLv3 license
  */
-
 Flash::set('success', __('Successfully deactivated Part Revisions plugin!'));
 exit();
