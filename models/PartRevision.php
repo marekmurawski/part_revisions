@@ -25,7 +25,7 @@ class PartRevision extends Record {
         $this->size            = mb_strlen($this->content);
 
         if ( !empty($this->filter_id) ) {
-            if ( in_array($part->filter_id, Filter::findAll()) ) {
+            if ( in_array($this->filter_id, Filter::findAll()) ) {
                 $this->content_html = Filter::get($this->filter_id)->apply($this->content);
             } else {
                 $this->content_html = $this->content;

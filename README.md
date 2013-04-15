@@ -16,6 +16,12 @@ Provides Page Part revisions history management.
 Changelog
 ---------
 
+###### 0.0.7
+
+- Wolf CMS 0.7.6 compatibility
+- compatible with MultiEdit 0.3.1
+- bugfixes
+
 ###### 0.0.6
 
 - fixed bug when saving page part revision for non-existing filter_id
