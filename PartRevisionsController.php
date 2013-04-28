@@ -54,7 +54,7 @@ class PartRevisionsController extends PluginController {
         }
 
         if ( $partToReplace == false ) {
-            $partToReplace               = new PagePart;
+            $partToReplace = new PagePart;
         } //create PagePart if it doesn't exist
         // reverting to selected revision
         $partToReplace->content      = $revertedPart->content;
@@ -241,6 +241,31 @@ class PartRevisionsController extends PluginController {
         else
             redirect(URL_PUBLIC . ADMIN_DIR);
 
+    }
+
+
+    function get_last_json() {
+        $page_id = isset($_POST['page_id']) ? (int) $_POST['page_id'] : false;
+        $part_name = isset($_POST['part_name']) ?  $_POST['part_name'] : false;
+        $limit = 5;
+        if ( $page_id && $part_name ) {
+            $partRevisions = Record::findAllFrom('PartRevision', 'page_id=:pid AND name=:name ORDER BY updated_on DESC LIMIT :limit', array(
+                        ':pid' => $page_id ,
+                        ':name' => $part_name ,
+                        ':limit' => $limit ,
+                        ));
+        }
+        /*
+         * [
+        {text: "Nofollow", value: "nofollow"},
+        {text: "Prev", value: "prev"},
+        {text: "Next", value: "next"}
+    ]
+         */
+        echo json_encode(array(
+                    array('text'=>'spas', 'value' => 'sdsd'),
+                    array('text'=>'spas', 'value' => 'sdsd'),
+                    ));
     }
 
 
